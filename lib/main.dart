@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_textrecognition/bloc/ocr_bloc.dart';
+import 'package:flutter_textrecognition/camera_page.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,7 +30,9 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  final XFile? image;
+
+  const MyHomePage({super.key, required this.title, this.image});
   final String title;
 
   @override
@@ -94,19 +96,39 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(
                 width: double.infinity,
                 height: MediaQuery.of(context).size.height * 0.05,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.amber,
-                  ),
-                  child: const Text('Upload'),
-                  onPressed: () {
-                    getImageFromGallery();
-                    if (image != null) {
-                      context
-                          .read<OcrBloc>()
-                          .add(OnScanningProccess(selectedImage: image));
-                    }
-                  },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                      ),
+                      child: const Text('Upload'),
+                      onPressed: () {
+                        getImageFromGallery();
+                        if (image != null) {
+                          context
+                              .read<OcrBloc>()
+                              .add(OnScanningProccess(selectedImage: image));
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.amber,
+                      ),
+                      child: const Text('Ambil Gambar'),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const CameraPage()));
+                      },
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
